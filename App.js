@@ -31,7 +31,7 @@ var sharedProps = {
 }
 
 // Sets the default scene you want for AR and VR
-var InitialARScene = require('./js/HelloWorldSceneAR');
+var InitialARScene = require('./js/RTP8-Floor4');
 var InitialVRScene = require('./js/HelloWorldScene');
 
 var UNSET = "UNSET";
@@ -52,7 +52,6 @@ export default class ViroSample extends Component {
     }
     this._getExperienceSelector = this._getExperienceSelector.bind(this);
     this._getARNavigator = this._getARNavigator.bind(this);
-    this._getVRNavigator = this._getVRNavigator.bind(this);
     this._getExperienceButtonOnPress = this._getExperienceButtonOnPress.bind(this);
     this._exitViro = this._exitViro.bind(this);
   }
@@ -62,8 +61,6 @@ export default class ViroSample extends Component {
   render() {
     if (this.state.navigatorType == UNSET) {
       return this._getExperienceSelector();
-    } else if (this.state.navigatorType == VR_NAVIGATOR_TYPE) {
-      return this._getVRNavigator();
     } else if (this.state.navigatorType == AR_NAVIGATOR_TYPE) {
       return this._getARNavigator();
     }
@@ -74,17 +71,14 @@ export default class ViroSample extends Component {
     return (
       <View style={localStyles.outer} >
         <View style={localStyles.inner} >
-
           <Text style={localStyles.titleText}>
             Please start at the red dot, facing the elevators.
           </Text>
-
-          <Image source={{uri: ''}}>
-
+          <Image style={{width: '100%', height: 300}} source={require('./assets/rtp8-floor.png')}/>
           <TouchableHighlight style={localStyles.buttons}
             onPress={this._getExperienceButtonOnPress(AR_NAVIGATOR_TYPE)}
             underlayColor={'#097DBC'} >
-            <Text style={localStyles.buttonText}>I'm Here</Text>
+            <Text style={localStyles.buttonText}>Start</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -96,14 +90,6 @@ export default class ViroSample extends Component {
     return (
       <ViroARSceneNavigator {...this.state.sharedProps}
         initialScene={{scene: InitialARScene}} />
-    );
-  }
-  
-  // Returns the ViroSceneNavigator which will start the VR experience
-  _getVRNavigator() {
-    return (
-      <ViroVRSceneNavigator {...this.state.sharedProps}
-        initialScene={{scene: InitialVRScene}} onExitViro={this._exitViro}/>
     );
   }
 
